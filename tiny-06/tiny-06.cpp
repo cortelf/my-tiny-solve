@@ -8,20 +8,21 @@
 class random_generator : public numbers_generator {
 public:
     random_generator() = default;
-
-    double random_double() override {
-        return double_dist(rdev);
-    }
-    int    random_int(int lower, int upper) override {
-        return std::uniform_int_distribution<int>(lower, upper)(rdev);
-    }
-    bool   random_bool() override {
-        return bool_dist(rdev);
-    }
-
     ~random_generator() override = default;
 
 private:
+    virtual double random_double_impl() override {
+        return double_dist(rdev);
+    }
+    
+    virtual int random_int_impl(int lower, int upper) override {
+        return std::uniform_int_distribution<int>(lower, upper)(rdev);
+    }
+    
+    virtual bool random_bool_impl() override {
+        return bool_dist(rdev);
+    }
+
     std::uniform_real_distribution<double> double_dist { 0, 1 };
     std::bernoulli_distribution bool_dist { 0.5 };
     std::random_device rdev;
@@ -32,19 +33,21 @@ public:
     mersenne_twister_generator(size_t seed) :
         rng(seed)
     {}
+    ~mersenne_twister_generator() override = default;
 
-    double random_double() override {
+private:
+    virtual double random_double_impl() override {
         return double_dist(rng);
     }
-    int    random_int(int lower, int upper) override {
+
+    virtual int random_int_impl(int lower, int upper) override {
         return std::uniform_int_distribution<int>(lower, upper)(rng);
     }
-    bool   random_bool() override {
+
+    virtual bool random_bool_impl() override {
         return bool_dist(rng);
     }
-
-    ~mersenne_twister_generator() override = default;
-private:
+    
     std::uniform_real_distribution<double> double_dist { 0, 1 };
     std::bernoulli_distribution bool_dist { 0.5 };
     std::mt19937_64 rng;
@@ -55,16 +58,19 @@ public:
     minstd_generator(size_t seed) :
         rng(static_cast<uint32_t>(seed)) {}
 
-    double random_double() override {
+private:
+    virtual double random_double_impl() override {
         return double_dist(rng);
     }
-    int    random_int(int lower, int upper) override {
+
+    virtual int random_int_impl(int lower, int upper) override {
         return std::uniform_int_distribution<int>(lower, upper)(rng);
     }
-    bool   random_bool() override {
+
+    virtual bool random_bool_impl() override {
         return bool_dist(rng);
     }
-private:
+
     std::uniform_real_distribution<double> double_dist { 0, 1 };
     std::bernoulli_distribution bool_dist { 0.5 };
     std::minstd_rand rng;
