@@ -32,4 +32,14 @@ private:
     double m_imag;
 };
 
+complex operator+(const complex& a, const complex& b);
+complex operator-(const complex& a, const complex& b);
+complex operator*(const complex& a, const complex& b);
+complex operator+(const complex& a, const double& b);
+complex operator-(const complex& a, const double& b);
+complex operator*(const complex& a, const double& b);
+complex operator+(const double& a, const complex& b);
+complex operator-(const double& a, const complex& b);
+complex operator*(const double& a, const complex& b);
+
 } // end namespace pjc
