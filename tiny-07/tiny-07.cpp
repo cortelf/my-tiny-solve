@@ -2,6 +2,10 @@
 
 #include <cstdint>
 
+NotImplementedException::NotImplementedException(std::string message) {
+    this->message = message;
+}
+
 mersenne_twister_generator::mersenne_twister_generator(size_t seed):
     rng(seed)
 {}
